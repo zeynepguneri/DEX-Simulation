@@ -21,7 +21,25 @@ const rl = readline.createInterface({
   });
   
 rl.question('Lütfen bir değer girin: ', (answer) => {
-    const giris = answer
+    const giris = answer;
+    switch(giris){
+        case '1':
+            console.log("Likidite ekleniyor.")
+            break;
+        case '2':
+            console.log("Swap yapılıyor.")
+            break;
+        case '3':
+            console.log("Havuz durumu görüntüleniyor.")
+            break;
+        case '4':
+            console.log("Bakiye görüntüleniyor.")
+            break;
+        case '5':
+            console.log("Çıkış yapılıyor.")
+            break;
+
+    }
     rl.close(); 
   });
   

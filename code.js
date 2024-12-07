@@ -29,7 +29,42 @@ function likidite_func(){
         console.log('Yeni bakiyeniz:', userBalance);
     }
     });
-    
+}
+
+function swap_func(){
+    fs.readFile('data.json', 'utf8', (err, data) => {
+        if (!data) return; 
+        const jsonData = JSON.parse(data);
+        const pool = jsonData.pool;
+        const userBalance = jsonData.userBalance;
+        const tokenOutput = prompt('Göndermek istediğiniz token(A ya da B): ');
+        const tokenInput = prompt('Almak istediğiniz token: ');
+        if (tokenInput === 'B' && tokenOutput === 'A'){
+            const tokenBInput = parseFloat(prompt('Almak istediğiniz tokenB miktarı: '));
+            const tokenAOutput = pool.K / (pool.tokenB - tokenBInput) - pool.tokenA;
+            userBalance.tokenB += tokenBInput;
+            userBalance.tokenA -= tokenAOutput;
+            pool.tokenA += tokenAOutput;
+            pool.tokenB -= tokenBInput;
+            fs.writeFileSync('data.json', JSON.stringify({ pool, userBalance }, null, 2));
+            console.log("Swap işlemi başarıyla gerçekleşti.")
+            console.log('Havuz durumu:', pool);
+            console.log('Yeni bakiyeniz:', userBalance);
+        }else if (tokenInput === 'A' && tokenOutput === 'B'){
+            const tokenAInput = parseFloat(prompt('Almak istediğiniz tokenA miktarı: '));
+            const tokenBOutput = pool.K / (pool.tokenA - tokenAInput) - pool.tokenB;
+            userBalance.tokenA += tokenAInput;
+            userBalance.tokenB -= tokenBOutput;
+            pool.tokenA += tokenBOutput;
+            pool.tokenB -= tokenAInput;
+            fs.writeFileSync('data.json', JSON.stringify({ pool, userBalance }, null, 2));
+            console.log("Swap işlemi başarıyla gerçekleşti.")
+            console.log('Havuz durumu:', pool);
+            console.log('Yeni bakiyeniz:', userBalance);
+        }else {
+            console.log("Girdiğiniz token çifti geçersiz.")
+        }
+    });
 }
 
 const program = new Command();
@@ -57,6 +92,7 @@ rl.question('Yapmak istediğiniz işlemi seçiniz: ', (answer) => {
             break;
         case '2':
             console.log("Swap yapılıyor.")
+            swap_func()
             break;
         case '3':
             console.log("Havuz durumu görüntüleniyor.")
@@ -67,7 +103,6 @@ rl.question('Yapmak istediğiniz işlemi seçiniz: ', (answer) => {
         case '5':
             console.log("Çıkış yapılıyor.")
             break;
-
     }
     rl.close(); 
   });

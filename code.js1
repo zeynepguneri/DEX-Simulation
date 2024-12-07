@@ -1,0 +1,49 @@
+import {Command} from 'commander';
+import chalk from 'chalk';
+const program = new Command();
+program
+    .command('menu')
+    .description('Kullanıcıya menüyü göster.')
+    .action(()=>{
+        console.log('Yapmak istediğiniz işlemi seçiniz:');
+        console.log('1. Likidite ekle');
+        console.log('2. Swap');
+        console.log('3. Havuz durumunu görüntüle');
+        console.log('4. Bakiye görüntüle');
+        console.log('5. Çıkış');
+})import readline from 'readline';
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question('Seçiminizi girin: ', (answer) => {
+  switch (answer) {
+    case '1':
+      console.log(chalk.green('Likidite ekleme işlemi seçildi.'));
+      // Likidite ekleme fonksiyonunu çağırın.
+      break;
+    case '2':
+      console.log(chalk.green('Swap işlemi seçildi.'));
+      // Swap işlemi fonksiyonunu çağırın.
+      break;
+    case '3':
+      console.log(chalk.green('Havuz durumu görüntüleme seçildi.'));
+      // Havuz durumunu görüntüleyen fonksiyon çağrılmalı.
+      break;
+    case '4':
+      console.log(chalk.green('Bakiye görüntüleme seçildi.'));
+      // Kullanıcı bakiyesini gösteren fonksiyon çağrılmalı.
+      break;
+    case '5':
+      console.log(chalk.blue('Çıkış yapılıyor...'));
+      rl.close();
+      break;
+    default:
+      console.log(chalk.red('Geçersiz bir seçim yaptınız.'));
+      rl.close();
+  }
+});
+
+program.parse(process.argv);

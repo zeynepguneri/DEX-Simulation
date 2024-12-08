@@ -77,6 +77,24 @@ function swap_func(){
     });
 }
 
+function showBalance() {
+    fs.readFile('data.json', 'utf8', (err, data) => {
+        if (err) {
+            console.log(chalk.red('Bakiye verileri okunurken bir hata oluştu.'));
+            return;
+        }
+        if (!data) {
+            console.log(chalk.yellow('Kullanıcı bakiyesi bulunamadı.'));
+            return;
+        }
+        const jsonData = JSON.parse(data);
+        const userBalance = jsonData.userBalance;
+        console.log(chalk.green('Güncel bakiyeniz:'));
+        console.log('Token A:', userBalance.tokenA);
+        console.log('Token B:', userBalance.tokenB);
+    });
+}
+
 const program = new Command();
 program
     .command('menü')
@@ -109,9 +127,11 @@ rl.question(chalk.blue('Yapmak istediğiniz işlemi seçiniz: '), (answer) => {
             break;
         case '4':
             console.log(chalk.green("Bakiye görüntüleniyor."))
+            showBalance();
             break;
         case '5':
             console.log(chalk.green("Çıkış yapılıyor."))
+            process.exit(0);
             break;
     }
     rl.close(); 
